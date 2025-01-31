@@ -1,0 +1,57 @@
+<div class="bookings-container">
+    <h2>My Bookings</h2>
+    
+    <ng-container *ngIf="bookings.length > 0; else noBookings">
+      <div class="booking-list">
+        <div *ngFor="let booking of bookings" class="booking-card">
+          <div class="booking-header">
+            <h3>{{ booking.therapistName }}</h3>
+            <span class="status" [class.taken]="booking.slotTaken">
+              {{ booking.slotTaken ? 'Confirmed' : 'Available' }}
+            </span>
+          </div>
+  
+          <div class="booking-details">
+            <p class="date-time">
+              {{ formatDate(booking.dateTime) }}
+            </p>
+            
+            <div class="action-buttons">
+              <button 
+                class="btn activity-btn"
+                (click)="completeActivity(booking.id)"
+                [disabled]="booking.activityCompleted">
+                {{ booking.activityCompleted ? 'Activity Completed' : 'Complete Activity' }}
+              </button>
+  
+              <button 
+                class="btn join-btn"
+                (click)="joinSession(booking.id)"
+                [disabled]="!isBookingTime(booking.dateTime) || !booking.activityCompleted">
+                Join Session
+              </button>
+  
+              <div class="prescription-actions" *ngIf="booking.prescriptionUrl">
+                <button 
+                  class="btn view-btn"
+                  (click)="viewPrescription(booking.prescriptionUrl!)">
+                  View Prescription
+                </button>
+                <button 
+                  class="btn download-btn"
+                  (click)="downloadPrescription(booking.prescriptionUrl!)">
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  
+    <ng-template #noBookings>
+      <div class="no-bookings">
+        <p>No bookings found.</p>
+      </div>
+    </ng-template>
+  </div>

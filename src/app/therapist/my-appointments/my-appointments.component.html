@@ -1,0 +1,37 @@
+<div class="appointments-container">
+    <h2>My Appointments</h2>
+    
+    <ng-container *ngIf="appointments.length > 0; else noAppointments">
+      <div class="appointment-list">
+        <div *ngFor="let appointment of appointments" class="appointment-card">
+          <div class="appointment-header">
+            <h3>{{ appointment.therapistName }}</h3>
+            <span class="status" [class.taken]="appointment.slotTaken">
+              {{ appointment.slotTaken ? 'Confirmed' : 'Available' }}
+            </span>
+          </div>
+  
+          <div class="appointment-details">
+            <p class="date-time">
+              {{ formatDate(appointment.dateTime) }}
+            </p>
+            
+            <div class="action-buttons">
+              <button 
+                class="btn start-session-btn"
+                (click)="startSession(appointment.id)"
+                [disabled]="!isSessionTime(appointment.dateTime)">
+                {{ isSessionTime(appointment.dateTime) ? 'Start Session' : 'Session Not Available' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  
+    <ng-template #noAppointments>
+      <div class="no-appointments">
+        <p>No appointments found.</p>
+      </div>
+    </ng-template>
+</div>
