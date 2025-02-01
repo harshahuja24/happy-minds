@@ -16,7 +16,6 @@ import { MyAppointmentsComponent } from './my-appointments/my-appointments.compo
   ],
   imports: [
     CommonModule,
-    BrowserModule,
     FormsModule,
     ReactiveFormsModule
   ],
