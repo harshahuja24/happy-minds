@@ -9,6 +9,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AdminLoginComponent } from './auth/admin-login/admin-login.component';
 import { AdminSignupComponent } from './auth/admin-signup/admin-signup.component';
+import { QuizComponent } from './home/quiz/quiz.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path:'my-appointments',
     component:MyAppointmentsComponent
+  },
+  {
+    path:'quiz',
+    component:QuizComponent
   },
   {
     path:'view-all-therapists',
