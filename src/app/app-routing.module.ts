@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MyBookingsComponent } from './user/my-bookings/my-bookings.component';
 import { GenerateSlotsComponent } from './therapist/generate-slots/generate-slots.component';
 import { MyAppointmentsComponent } from './therapist/my-appointments/my-appointments.component';
+import { ViewAllTherapistsComponent } from './user/view-all-therapists/view-all-therapists.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path:'my-appointments',
     component:MyAppointmentsComponent
+  },
+  {
+    path:'view-all-therapists',
+    component:ViewAllTherapistsComponent
   }
 ];
 

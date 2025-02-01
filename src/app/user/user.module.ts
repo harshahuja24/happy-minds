@@ -6,6 +6,7 @@ import { ViewAllTherapistsComponent } from './view-all-therapists/view-all-thera
 import { BookAppointmentComponent } from './book-appointment/book-appointment.component';
 import { CanvasTestComponent } from './canvas-test/canvas-test.component';
 import { VideoCallComponent } from './video-call/video-call.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -19,7 +20,9 @@ import { VideoCallComponent } from './video-call/video-call.component';
     VideoCallComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class UserModule { }

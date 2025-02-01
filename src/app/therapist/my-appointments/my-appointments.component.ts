@@ -40,7 +40,14 @@ export class MyAppointmentsComponent implements OnInit {
         dateTime: new Date('2025-02-03T14:30:00'),
         slotTaken: true,
         sessionLink: 'https://meet.example.com/session2'
-      }
+      },
+      {
+        id: 3,
+        therapistName: 'Dr. Michael Chen',
+        dateTime: new Date('2025-01-31T20:27:00'),
+        slotTaken: true,
+        sessionLink: 'https://meet.example.com/session2'
+      },
     ];
   }
 

@@ -118,3 +118,51 @@
     opacity: 0.7;
     cursor: not-allowed;
   }
+
+  .slots-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  
+  .slot-card {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .slot-time {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .slot-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .select-btn, .customize-btn {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .select-btn {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .select-btn.selected {
+    background-color: #28a745;
+  }
+  
+  .customize-btn {
+    background-color: #6c757d;
+    color: white;
+  }

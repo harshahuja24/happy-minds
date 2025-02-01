@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BookSlotService } from 'src/app/shared/book-slot.service';
 import { TimeSlot } from 'src/app/shared/interfaces/timeslot.interface';
 
 @Component({
@@ -13,8 +14,9 @@ export class GenerateSlotsComponent {
   showCustomizeModal = false;
   customSlot: TimeSlot = { startTime: '', endTime: '', isCustomized: false, isSelected: false };
   currentSlotIndex: number = -1;
+  bookSlotService: any;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, bookSlotService:BookSlotService) {
     this.slotForm = this.fb.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
@@ -23,6 +25,8 @@ export class GenerateSlotsComponent {
       duration: ['', [Validators.required, Validators.min(1)]],
       breakTime: ['', [Validators.required, Validators.min(0)]],
     });
+
+    this.bookSlotService = bookSlotService;
   }
 
   generateSlots() {
@@ -97,8 +101,30 @@ export class GenerateSlotsComponent {
   }
 
   confirmSlots() {
-    const selectedSlots = this.generatedSlots.filter(slot => slot.isSelected);
-    console.log('Confirmed slots:', selectedSlots);
-    // Here you can add logic to save the selected slots to your backend
+    if (this.slotForm.valid && this.hasSelectedSlots()) {
+      const formValue = this.slotForm.value;
+      const startDate = new Date(formValue.startDate);
+      const endDate = new Date(formValue.endDate);
+      const selectedSlots = this.generatedSlots.filter(slot => slot.isSelected);
+      const formattedSlots:any = [];
+  
+      // Iterate through each date
+      for (let currentDate = new Date(startDate); 
+           currentDate <= endDate; 
+           currentDate.setDate(currentDate.getDate() + 1)) {
+        
+        // For each selected slot, create an entry with the current date
+        selectedSlots.forEach(slot => {
+          formattedSlots.push({
+            therapistId: 2,
+            date: currentDate.toISOString().split('T')[0],
+            timeSlot: `${slot.startTime} - ${slot.endTime}`
+          });
+        });
+      }
+  
+      console.log('Formatted slots:', formattedSlots);
+      this.bookSlotService.createSlots(formattedSlots).subscribe(()=> console.log("Data sebt "))
+    }
   }
 }
