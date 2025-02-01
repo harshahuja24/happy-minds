@@ -1,0 +1,124 @@
+/* Categories Section Styling */
+.categories-section {
+    padding: 60px 20px;
+    background-color: #fff;
+    text-align: center;
+  }
+  
+  .section-title {
+    font-size: 32px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .section-subtitle {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 40px;
+  }
+  
+  .categories-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Category Styling */
+  .category {
+    margin-bottom: 40px;
+  }
+  
+  .category-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #222;
+    margin-bottom: 20px;
+  }
+  
+  .category-items {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+  /* Card Styling */
+  .card {
+    width: 16rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .card-body {
+    padding: 20px;
+    text-align: left;
+  }
+  
+  .card-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: #222;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .card-footer {
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
+  .card-link {
+    color: #4CAF50; /* Green color */
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .card-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Animation for Cards */
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .card {
+    animation: fadeInUp 0.5s ease-out;
+  }
+  
+  .card:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+  
+  .card:nth-child(2) {
+    animation-delay: 0.4s;
+  }

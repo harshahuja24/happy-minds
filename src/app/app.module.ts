@@ -11,10 +11,16 @@ import { AuthModule } from './auth/auth.module';
 import { TherapistModule } from './therapist/therapist.module';
 import { UserModule } from './user/user.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BooksComponent } from '../app/resources/books/books.component';
+import { SongsComponent } from '../app/resources/songs/songs.component';
+import { VideosComponent } from '../app/resources/videos/videos.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BooksComponent,
+    SongsComponent,
+    VideosComponent
   ],
   imports: [
     BrowserModule,

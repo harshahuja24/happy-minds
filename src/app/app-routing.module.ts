@@ -4,6 +4,7 @@ import { MyBookingsComponent } from './user/my-bookings/my-bookings.component';
 import { GenerateSlotsComponent } from './therapist/generate-slots/generate-slots.component';
 import { MyAppointmentsComponent } from './therapist/my-appointments/my-appointments.component';
 import { ViewAllTherapistsComponent } from './user/view-all-therapists/view-all-therapists.component';
+import { BooksComponent } from './resources/books/books.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path:'view-all-therapists',
     component:ViewAllTherapistsComponent
+  },
+  {
+    path: 'books',
+    component:BooksComponent
   }
 ];
 
