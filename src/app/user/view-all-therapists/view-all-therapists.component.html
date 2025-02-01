@@ -101,7 +101,7 @@
       </div>
     </div>
   <!-- Replace your existing offcanvas div with this -->
-<ng-template #bookingSidebar let-offcanvas>
+  <ng-template #bookingSidebar let-offcanvas>
     <div class="offcanvas-header">
       <h5 class="offcanvas-title">Schedule Appointment</h5>
       <button type="button" class="btn-close" (click)="offcanvas.dismiss()"></button>
@@ -129,7 +129,7 @@
             <button *ngFor="let slot of availableSlots" 
                     (click)="selectSlot(slot.timeSlot)"
                     [class.selected]="slot.timeSlot === selectedSlot"
-                    class="btn btn-outline-primary me-2 mb-2">
+                    class="time-slot-btn">
               {{ slot.timeSlot }}
             </button>
           </div>
@@ -147,3 +147,4 @@
       </div>
     </div>
   </ng-template>
+  

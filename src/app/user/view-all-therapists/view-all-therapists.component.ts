@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/c
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { ViewAllTherapistsService } from 'src/app/shared/view-all-therapists.service';
 import { Subscription } from 'rxjs';
-
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-view-all-therapists',
   templateUrl: './view-all-therapists.component.html',
@@ -31,7 +32,8 @@ export class ViewAllTherapistsComponent implements OnInit, OnDestroy {
 
   constructor(
     private offcanvasService: NgbOffcanvas,
-    private viewAllTherapistsService: ViewAllTherapistsService
+    private viewAllTherapistsService: ViewAllTherapistsService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -96,43 +98,58 @@ export class ViewAllTherapistsComponent implements OnInit, OnDestroy {
 
   // Open Booking Modal
   // Open Booking Modal
-openBookingModal(therapist: any): void {
-  this.selectedDoctor = therapist;
-  this.selectedDate = null;
-  this.selectedSlot = null;
-  this.availableDates = [];
-  this.availableSlots = [];
-  
-  // Fetch available dates for the selected therapist
-  const subscription = this.viewAllTherapistsService.getAvailableDates(therapist.therapistId)
-    .subscribe({
-      next: (dates) => {
-        this.availableDates = dates;
-        console.log('Available dates:', this.availableDates); // Debug log
-      },
-      error: (error) => {
-        console.error('Error fetching available dates:', error);
-      }
-    });
-  
-  this.subscriptions.push(subscription);
-  
-  // Open the offcanvas with the template reference
-  this.offcanvasService.open(this.bookingSidebar, { position: 'end' });
-} 
+  openBookingModal(therapist: any): void {
+    // Create a copy of the therapist object and ensure name property exists
+    this.selectedDoctor = {
+      ...therapist,
+      name: therapist.name || therapist.therapistName // Handle both possible property names
+    };
+    
+    this.selectedDate = null;
+    this.selectedSlot = null;
+    this.availableDates = [];
+    this.availableSlots = [];
+    
+    // Fetch available dates for the selected therapist
+    const subscription = this.viewAllTherapistsService.getAvailableDates(therapist.therapistId)
+      .subscribe({
+        next: (dates) => {
+          this.availableDates = dates;
+          console.log('Available dates:', this.availableDates);
+        },
+        error: (error) => {
+          console.error('Error fetching available dates:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to load available dates. Please try again.',
+          });
+        }
+      });
+    
+    this.subscriptions.push(subscription);
+    
+    // Open the offcanvas
+    this.offcanvasService.open(this.bookingSidebar, { position: 'end' });
+  }
   // Select a Date
   onDateSelect(date: string): void {
     this.selectedDate = date;
-    this.selectedSlot = null;
+    this.selectedSlot = null; // Reset slot selection when date changes
     
-    // Fetch available slots for the selected date
     const subscription = this.viewAllTherapistsService.getAllAvailableSlots(date)
       .subscribe({
         next: (slots) => {
           this.availableSlots = slots;
+          console.log('Available slots:', slots);
         },
         error: (error) => {
           console.error('Error fetching available slots:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to load available time slots. Please try again.',
+          });
         }
       });
     
@@ -142,19 +159,41 @@ openBookingModal(therapist: any): void {
   // Select a Slot
   selectSlot(slot: string): void {
     this.selectedSlot = slot;
+    console.log('Selected slot:', slot); // Debug log
   }
-
-  // Proceed with Booking
   proceedBooking(): void {
     if (this.selectedDoctor && this.selectedDate && this.selectedSlot) {
-      console.log('Booking confirmed for:', {
+      const bookingDetails = {
         therapist: this.selectedDoctor.name,
         date: this.selectedDate,
         slot: this.selectedSlot
-      });
+      };
+
+      console.log('Booking confirmed:', bookingDetails);
+      
+      // Close the sidebar
       this.offcanvasService.dismiss('bookingSidebar');
+
+      // Show success message with SweetAlert2
+      Swal.fire({
+        icon: 'success',
+        title: 'Booking Confirmed!',
+        text: `Appointment booked with ${this.selectedDoctor.name} for ${this.selectedDate} at ${this.selectedSlot}`,
+        showConfirmButton: false,
+        timer: 2500
+      }).then(() => {
+        // Navigate after the alert closes
+        this.router.navigate(['/my-bookings']);
+      });
+
     } else {
-      console.error('Please select both date and slot before proceeding.');
+      // Show error message
+      Swal.fire({
+        icon: 'error',
+        title: 'Booking Error',
+        text: 'Please select both date and slot before proceeding.',
+        showConfirmButton: true
+      });
     }
   }
 }
