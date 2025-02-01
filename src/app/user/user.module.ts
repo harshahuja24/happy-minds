@@ -7,7 +7,9 @@ import { BookAppointmentComponent } from './book-appointment/book-appointment.co
 import { CanvasTestComponent } from './canvas-test/canvas-test.component';
 import { VideoCallComponent } from './video-call/video-call.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr/toastr/toastr.module';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    
+
   ]
 })
 export class UserModule { }

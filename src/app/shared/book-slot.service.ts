@@ -17,4 +17,12 @@ export class BookSlotService {
     const requests = slots.map(slot => this.createSlot(slot));
     return forkJoin(requests);
   }
+
+  getAllMyBookings(id:number): Observable<any> {
+    return this.httpClient.get(`http://localhost:8080/getAllMyBookings/${id}`);
+  }
+
+  updateActivityStatus(bookingId: number, completed: boolean) {
+    return this.httpClient.put(`http://localhost:8080/updateActivityStatus/${bookingId}`, { completed });
+  }
 }

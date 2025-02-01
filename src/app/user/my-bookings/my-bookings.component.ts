@@ -1,5 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { BookSlotService } from "src/app/shared/book-slot.service";
+
+// Updated interfaces to match the database structure
+interface BookingResponse {
+  id: number;
+  therapistId: number;
+  dateTime: string;
+  activityCompleted: number;
+  therapistName?: string; // Will be included after joining with Therapists table
+}
 
 interface Booking {
   id: number;
@@ -7,7 +17,6 @@ interface Booking {
   dateTime: Date;
   slotTaken: boolean;
   activityCompleted: boolean;
-  prescriptionUrl?: string;
 }
 
 @Component({
@@ -19,34 +28,28 @@ interface Booking {
 export class MyBookingsComponent implements OnInit {
   bookings: Booking[] = [];
 
-  constructor(private datePipe: DatePipe) { }
+  constructor(
+    private datePipe: DatePipe,
+    private getBookings: BookSlotService
+  ) { }
 
   ngOnInit(): void {
-    // Initialize with mock data
     this.loadBookings();
   }
 
   loadBookings() {
-    // Simulating API call with mock data
-    this.bookings = [
-      {
-        id: 1,
-        therapistName: 'Dr. Sarah Johnson',
-        dateTime: new Date('2025-02-01T10:00:00'),
-        slotTaken: true,
-        activityCompleted: false,
-        prescriptionUrl: 'assets/prescriptions/rx_123.pdf'
-      },
-      {
-        id: 2,
-        therapistName: 'Dr. Michael Chen',
-        dateTime: new Date('2025-02-03T14:30:00'),
-        slotTaken: true,
-        activityCompleted: true,
-        prescriptionUrl: 'assets/prescriptions/rx_124.pdf'
-      }
-    ];
-    console.log('Bookings loaded:', this.bookings); // Debug log
+    // Assuming you're passing the user_id
+    this.getBookings.getAllMyBookings(3).subscribe((data: BookingResponse[]) => {
+      this.bookings = data.map(booking => ({
+        id: booking.id,
+        therapistName: booking.therapistName || `Therapist ${booking.therapistId}`,
+        dateTime: new Date(booking.dateTime),
+        slotTaken: true, // All bookings in the table are confirmed
+        activityCompleted: booking.activityCompleted === 1
+      }));
+      
+      console.log('Bookings loaded:', this.bookings);
+    });
   }
 
   formatDate(date: Date): string {
@@ -60,25 +63,22 @@ export class MyBookingsComponent implements OnInit {
   }
 
   completeActivity(bookingId: number): void {
-    const booking = this.bookings.find(b => b.id === bookingId);
-    if (booking) {
-      booking.activityCompleted = true;
-    }
+    // Update to make an API call to your backend
+    this.getBookings.updateActivityStatus(bookingId, true).subscribe(
+      (response: any) => {
+        const booking = this.bookings.find(b => b.id === bookingId);
+        if (booking) {
+          booking.activityCompleted = true;
+        }
+      },
+      (error: any) => {
+        console.error('Error updating activity status:', error);
+      }
+    );
   }
 
   joinSession(bookingId: number): void {
     console.log(`Joining session for booking ${bookingId}`);
-  }
-
-  downloadPrescription(prescriptionUrl: string): void {
-    console.log(`Downloading prescription from ${prescriptionUrl}`);
-    // Implement download logic here
-    window.open(prescriptionUrl, '_blank');
-  }
-
-  viewPrescription(prescriptionUrl: string): void {
-    console.log(`Viewing prescription from ${prescriptionUrl}`);
-    // Implement view logic here
-    window.open(prescriptionUrl, '_blank');
+    // Implement your session joining logic here
   }
 }
