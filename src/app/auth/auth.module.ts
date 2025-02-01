@@ -2,7 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
-import { FaceApiComponent } from './face-api/face-api.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AdminSignupComponent } from './admin-signup/admin-signup.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { WebcamComponent } from './webcam/webcam.component';
+import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 
 
 
@@ -10,10 +14,15 @@ import { FaceApiComponent } from './face-api/face-api.component';
   declarations: [
     SignupComponent,
     LoginComponent,
-    FaceApiComponent
+    AdminSignupComponent,
+    AdminLoginComponent,
+    WebcamComponent,
+    AuthLayoutComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AuthModule { }
