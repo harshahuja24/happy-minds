@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HistoryLogsComponent } from './history-logs/history-logs.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { MyAppointmentsComponent } from './my-appointments/my-appointments.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -17,7 +18,10 @@ import { MyAppointmentsComponent } from './my-appointments/my-appointments.compo
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forChild([
+      { path: 'my-appointments', component: MyAppointmentsComponent }
+    ])
   ],
   exports:[
     GenerateSlotsComponent,

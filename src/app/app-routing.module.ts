@@ -22,7 +22,12 @@ const routes: Routes = [
   {
     path:'view-all-therapists',
     component:ViewAllTherapistsComponent
-  }
+  },
+  { 
+    path: 'therapist', 
+    loadChildren: () => import('./therapist/therapist.module').then(m => m.TherapistModule)
+  },
+
 ];
 
 @NgModule({

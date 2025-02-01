@@ -13,23 +13,27 @@
 
         <div class="booking-details">
           <p class="date-time">
-            {{ formatDate(booking.dateTime) }}
+            {{ formatDateTime(booking.dateTime) }}
           </p>
           
           <div class="action-buttons">
             <button 
-              class="btn activity-btn"
-              (click)="completeActivity(booking.id)"
-              [disabled]="booking.activityCompleted">
-              {{ booking.activityCompleted ? 'Activity Completed' : 'Complete Activity' }}
-            </button>
+            class="btn activity-btn"
+            (click)="completeActivity(booking.id)"
+            [disabled]="booking.activityCompleted"
+            *ngIf="!booking.activityCompleted">
+            Complete Activity
+          </button>
 
-            <button 
-              class="btn join-btn"
-              (click)="joinSession(booking.id)"
-              [disabled]="!isBookingTime(booking.dateTime) || !booking.activityCompleted">
-              Join Session
-            </button>
+
+          <button 
+          class="btn join-btn"
+          (click)="joinSession(booking.id)"
+          [disabled]="!hasSpecialKey()">
+          Join Session
+        </button>
+
+            <p>SPECIAL KEY: {{this.sessionKey}}</p>
           </div>
         </div>
       </div>

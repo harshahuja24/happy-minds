@@ -2,21 +2,20 @@ import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { BookSlotService } from "src/app/shared/book-slot.service";
 
-// Updated interfaces to match the database structure
 interface BookingResponse {
   id: number;
   therapistId: number;
   dateTime: string;
   activityCompleted: number;
-  therapistName?: string; // Will be included after joining with Therapists table
+  therapistName?: string;
 }
 
 interface Booking {
   id: number;
   therapistName: string;
-  dateTime: Date;
+  dateTime: string;
   slotTaken: boolean;
-  activityCompleted: boolean;
+  activityCompleted: number;
 }
 
 @Component({
@@ -27,6 +26,7 @@ interface Booking {
 })
 export class MyBookingsComponent implements OnInit {
   bookings: Booking[] = [];
+  sessionKey = localStorage.getItem('SESSION_KEY') || '';
 
   constructor(
     private datePipe: DatePipe,
@@ -35,50 +35,84 @@ export class MyBookingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadBookings();
+    this.sessionKey = localStorage.getItem('sessionKey') || '';
   }
 
   loadBookings() {
-    // Assuming you're passing the user_id
     this.getBookings.getAllMyBookings(3).subscribe((data: BookingResponse[]) => {
       this.bookings = data.map(booking => ({
         id: booking.id,
         therapistName: booking.therapistName || `Therapist ${booking.therapistId}`,
-        dateTime: new Date(booking.dateTime),
-        slotTaken: true, // All bookings in the table are confirmed
-        activityCompleted: booking.activityCompleted === 1
+        dateTime: booking.dateTime,
+        slotTaken: true,
+        activityCompleted: booking.activityCompleted === 1 ? 1 : 0
       }));
-      
-      console.log('Bookings loaded:', this.bookings);
+      console.log('Mapped bookings:', this.bookings);
     });
+
+    this.sessionKey = localStorage.getItem('sessionKey') || '';
+
   }
 
-  formatDate(date: Date): string {
-    return this.datePipe.transform(date, 'EEEE, MMMM d, y, h:mm a') || '';
+ hasSpecialKey():boolean{
+  this.sessionKey = localStorage.getItem('sessionKey') || '';
+  if(this.sessionKey != ''){
+    return true;
+  }
+  return false;
+ }
+
+  formatDateTime(dateTimeStr: string): string {
+    // First, extract the date and time from the string
+    // Example input: "2024-02-01T09:00 AM - 10:00 AM"
+    const parts = dateTimeStr.split('T');
+    if (parts.length !== 2) return dateTimeStr;
+
+    const date = new Date(parts[0]);
+    const timeRange = parts[1];
+
+    // Format the date
+    const formattedDate = this.datePipe.transform(date, 'EEEE, MMMM d, y');
+    
+    // Return combined date and time
+    return `${formattedDate}, ${timeRange}`;
   }
 
-  isBookingTime(dateTime: Date): boolean {
-    const now = new Date();
-    const bookingTime = new Date(dateTime);
-    return now >= new Date(bookingTime.getTime() - 5 * 60000);
+  isBookingTime(dateTimeStr: string): boolean {
+    try {
+      // Extract just the date and start time
+      const [dateStr, timeRange] = dateTimeStr.split('T');
+      const startTime = timeRange.split(' - ')[0];
+      
+      // Combine date and start time
+      const bookingDateTime = new Date(`${dateStr} ${startTime}`);
+      const now = new Date();
+
+      // Check if current time is within 5 minutes of booking time
+      return now >= new Date(bookingDateTime.getTime() - 5 * 60000);
+    } catch (error) {
+      console.error('Error parsing datetime:', error);
+      return false;
+    }
   }
 
   completeActivity(bookingId: number): void {
-    // Update to make an API call to your backend
     this.getBookings.updateActivityStatus(bookingId, true).subscribe(
       (response: any) => {
         const booking = this.bookings.find(b => b.id === bookingId);
         if (booking) {
-          booking.activityCompleted = true;
+          booking.activityCompleted = 1;
         }
       },
       (error: any) => {
         console.error('Error updating activity status:', error);
       }
     );
+
+    this.loadBookings();
   }
 
   joinSession(bookingId: number): void {
-    console.log(`Joining session for booking ${bookingId}`);
-    // Implement your session joining logic here
+    window.location.href = 'http://localhost:50249';
   }
 }

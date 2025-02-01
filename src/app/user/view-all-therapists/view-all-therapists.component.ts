@@ -4,6 +4,7 @@ import { ViewAllTherapistsService } from 'src/app/shared/view-all-therapists.ser
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { BookSlotService } from 'src/app/shared/book-slot.service';
 @Component({
   selector: 'app-view-all-therapists',
   templateUrl: './view-all-therapists.component.html',
@@ -34,6 +35,7 @@ export class ViewAllTherapistsComponent implements OnInit, OnDestroy {
     private offcanvasService: NgbOffcanvas,
     private viewAllTherapistsService: ViewAllTherapistsService,
     private router: Router,
+    private bookAService: BookSlotService
   ) {}
 
   ngOnInit(): void {
@@ -163,31 +165,45 @@ export class ViewAllTherapistsComponent implements OnInit, OnDestroy {
   }
   proceedBooking(): void {
     if (this.selectedDoctor && this.selectedDate && this.selectedSlot) {
-      const bookingDetails = {
-        therapist: this.selectedDoctor.name,
-        date: this.selectedDate,
-        slot: this.selectedSlot
+      const bookingData = {
+        therapistId: this.selectedDoctor.therapistId, // Use therapist ID
+        user_id: 3, // Replace with actual logged-in user ID
+        dateTime: `${this.selectedDate}T${this.selectedSlot}`, // Format for LocalDateTime
+        activityCompleted: false
       };
-
-      console.log('Booking confirmed:', bookingDetails);
       
-      // Close the sidebar
-      this.offcanvasService.dismiss('bookingSidebar');
 
-      // Show success message with SweetAlert2
-      Swal.fire({
-        icon: 'success',
-        title: 'Booking Confirmed!',
-        text: `Appointment booked with ${this.selectedDoctor.name} for ${this.selectedDate} at ${this.selectedSlot}`,
-        showConfirmButton: false,
-        timer: 2500
-      }).then(() => {
-        // Navigate after the alert closes
-        this.router.navigate(['/my-bookings']);
+      console.log('Sending booking request:', bookingData);
+
+      this.bookAService.addBooking(bookingData).subscribe({
+        next: (response) => {
+          console.log('Booking successful:', response);
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Booking Confirmed!',
+            text: `Appointment booked with ${this.selectedDoctor.name} for ${this.selectedDate} at ${this.selectedSlot}`,
+            showConfirmButton: false,
+            timer: 2500
+          }).then(() => {
+            this.router.navigate(['/my-bookings']);
+          });
+
+          // Close the sidebar
+          this.offcanvasService.dismiss('bookingSidebar');
+        },
+        error: (error) => {
+          console.error('Booking failed:', error);
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Booking Failed',
+            text: 'Could not book the appointment. Please try again.',
+            showConfirmButton: true
+          });
+        }
       });
-
     } else {
-      // Show error message
       Swal.fire({
         icon: 'error',
         title: 'Booking Error',
