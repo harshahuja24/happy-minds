@@ -1,1 +1,48 @@
-<p>signup works!</p>
+<div class="auth-container">
+    <h2>Sign Up</h2>
+    <form [formGroup]="signupForm" (ngSubmit)="onSignUp()">
+      <!-- Username -->
+      <div class="input-container">
+        <input formControlName="username" type="text" placeholder="Username" required>
+        <div *ngIf="signupForm.get('username')?.invalid && (signupForm.get('username')?.touched || signupForm.get('username')?.dirty)" class="error-message">
+          Username is required.
+        </div>
+      </div>
+  
+      <!-- Email -->
+      <div class="input-container">
+        <input formControlName="email" type="email" placeholder="Email Address" required>
+        <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.touched || signupForm.get('email')?.dirty)" class="error-message">
+          Please enter a valid email address.
+        </div>
+      </div>
+  
+      <!-- Phone Number -->
+      <div class="input-container">
+        <input formControlName="phone_number" type="text" placeholder="Phone Number" required>
+        <div *ngIf="signupForm.get('phone_number')?.invalid && (signupForm.get('phone_number')?.touched || signupForm.get('phone_number')?.dirty)" class="error-message">
+          Please enter a valid 10-digit phone number.
+        </div>
+      </div>
+  
+      <!-- Password -->
+      <div class="input-container">
+        <input formControlName="password1" type="password" placeholder="Password" required>
+        <div *ngIf="signupForm.get('password1')?.invalid && (signupForm.get('password1')?.touched || signupForm.get('password1')?.dirty)" class="error-message">
+          Password must be at least 6 characters long.
+        </div>
+      </div>
+  
+      <!-- Confirm Password -->
+      <div class="input-container">
+        <input formControlName="confirm_password1" type="password" placeholder="Confirm Password" required>
+        <div *ngIf="signupForm.get('confirm_password1')?.hasError('passwordMismatch') && (signupForm.get('confirm_password1')?.touched || signupForm.get('confirmPassword')?.dirty)" class="error-message">
+          Passwords do not match.
+        </div>
+      </div>
+  
+      <!-- Sign Up Button -->
+      <button type="submit" class="btn" [disabled]="!signupForm.valid" (click)="createUser()">Sign Up</button>
+    </form>
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
+  </div>

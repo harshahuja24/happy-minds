@@ -1,0 +1,166 @@
+/* General Styles */
+body {
+    font-family: 'Figtree', sans-serif;
+    background-color: rgba(240, 240, 240, 0.7); /* Lighter transparent background */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Background Overlay */
+.bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.15); /* Less Dark Transparent Background */
+    z-index: -1;
+}
+
+/* Heading Styling */
+.quiz-heading {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: black;
+}
+
+/* Wrapper for the entire quiz */
+.quiz-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Quiz Container (Modal) */
+.quiz-container {
+    max-width: 600px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.97); /* Slight Transparency */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; /* Initially invisible */
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Modal Transition (Slide In & Fade In) */
+.modal-enter {
+    opacity: 0;
+    transform: translate(-50%, -60%); /* Start above the screen */
+}
+.modal-enter-active {
+    opacity: 1;
+    transform: translate(-50%, -50%); /* Center on the screen */
+}
+
+/* Modal Content */
+.question-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* Buttons */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    background-color: #34D399; /* Default green color */
+    color: white;
+    font-family: 'Figtree', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #10B981; /* A slightly darker green */
+}
+
+/* Button clicked effect */
+button.clicked {
+    background-color: #0EA5E9; /* Greenish blue when clicked */
+}
+
+/* Selected Button Effect */
+button.selected {
+    background-color: #0EA5E9; /* Greenish blue to indicate selected */
+}
+
+/* Disable hover effect for clicked button */
+button.clicked:hover {
+    background-color: #0EA5E9; /* Keep the clicked color */
+}
+
+/* Navigation Buttons */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.nav-btn {
+    background-color: white;
+    border: 2px solid #007c9d;
+    color: #007c9d;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 45%;
+    transition: all 0.3s ease;
+    font-family: 'Figtree', sans-serif;
+}
+
+/* Hover & Click Effect for Navigation Buttons */
+.nav-btn:hover,
+.nav-btn:active {
+    background-color: #007c9d;
+    color: #515674;
+    border: 2px solid #007c9d;
+}
+
+/* Disabled Button Style */
+.nav-btn:disabled {
+    background-color: #ccc;
+    color: #aaa;
+    border: 2px solid #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .quiz-container {
+        width: 90%;
+        padding: 15px;
+    }
+}
+

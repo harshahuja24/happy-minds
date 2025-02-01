@@ -3,16 +3,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { BooksComponent } from './books/books.component';
 import { SongsComponent } from './songs/songs.component';
 import { VideosComponent } from './videos/videos.component';
-
-const routes: Routes = [
-  { path: 'books', component: BooksComponent },
-  { path: 'songs', component: SongsComponent },
-  { path: 'videos', component: VideosComponent },
-  { path: '', redirectTo: 'books', pathMatch: 'full' }, // Default page
-];
+import { MainComponent } from './main/main.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  imports: [ CommonModule],
+  exports: [
+     MainComponent,
+    BooksComponent,
+    SongsComponent,
+    VideosComponent],
+  declarations: [
+    MainComponent,
+    BooksComponent,
+    SongsComponent,
+    VideosComponent
+  ]
+
 })
 export class MediaRoutingModule { }

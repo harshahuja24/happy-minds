@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FaceApiComponent } from './face-api.component';
+import { WebcamComponent } from './webcam.component';
 
-describe('FaceApiComponent', () => {
-  let component: FaceApiComponent;
-  let fixture: ComponentFixture<FaceApiComponent>;
+describe('WebcamComponent', () => {
+  let component: WebcamComponent;
+  let fixture: ComponentFixture<WebcamComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FaceApiComponent]
+      declarations: [WebcamComponent]
     });
-    fixture = TestBed.createComponent(FaceApiComponent);
+    fixture = TestBed.createComponent(WebcamComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
