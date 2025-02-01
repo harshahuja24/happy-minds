@@ -1,0 +1,37 @@
+<!-- Background Overlay -->
+<div class="bg-overlay"></div>
+
+<!-- Quiz Wrapper -->
+<div class="quiz-wrapper">
+  <h1 class="quiz-heading">Welcome to the Quiz!</h1>
+
+  <div class="quiz-container" [class.slide-in]="isTransitioning" [class.modal-enter-active]="!isTransitioning">
+    <div class="question-modal">
+      <h2>{{ questions[currentIndex].question }}</h2>
+
+      <div *ngFor="let option of questions[currentIndex].options">
+        <!-- Inside quiz.component.html -->
+         <button 
+         (click)="selectAnswer(option)"
+          [class.selected]="isAnswerSelected(option.text)" 
+          [class.clicked]="isButtonClicked(option.text)">
+          {{ option.text }}
+        </button>
+
+      </div>
+
+      <button (click)="submitQuiz()" *ngIf="currentIndex === questions.length - 1" class="submit-btn">
+        Submit
+      </button>
+    </div>
+
+    <div class="navigation-buttons">
+      <button (click)="previousQuestion()" [disabled]="currentIndex === 0" class="nav-btn">
+        Previous
+      </button>
+      <button (click)="nextQuestion()" [disabled]="currentIndex === questions.length - 1" class="nav-btn">
+        Next
+      </button>
+    </div>
+  </div>
+</div>
